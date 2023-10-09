@@ -16,6 +16,7 @@ enum APAlert: Error {
     case invalidForm
     case invalidEmail
     case userSaveSuccess
+    case invalidUserData
     
     var alertItem: AlertItem {
         switch self {
@@ -51,6 +52,10 @@ enum APAlert: Error {
         case .userSaveSuccess:
             return AlertItem(title: Text("Profile saved"),
                              message: Text("Your profile information saved successfully."),
+                             dismissButton: .default(Text("Ok")))
+        case .invalidUserData:
+            return AlertItem(title: Text("Profile Error"),
+                             message: Text("There was an error saving or retrieving your profile."),
                              dismissButton: .default(Text("Ok")))
         }
     }

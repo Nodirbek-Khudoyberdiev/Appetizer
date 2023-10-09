@@ -16,7 +16,7 @@ class Networking {
     
     private init(){}
     
-    func getAppetizers(completion: @escaping (Result<[Appetizer], APError>) -> Void){
+    func getAppetizers(completion: @escaping (Result<[Appetizer], APAlert>) -> Void){
         guard let url = URL(string: appetizerURL) else {
             completion(.failure(.invalidURL))
             return

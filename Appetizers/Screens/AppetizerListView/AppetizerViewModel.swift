@@ -12,19 +12,22 @@ final class AppetizerViewModel: ObservableObject {
     @Published var appetizers: [Appetizer] = []
     @Published var alertItem: AlertItem?
     @Published var isLoading = false
+    @Published var isShowingDetail = false
+    @Published var selectedAppetizer: Appetizer?
     
     
     func getAppetizers(){
         isLoading = true
-        Networking.shared.getAppetizers {[self] result in
+        Networking.shared.getAppetizers {[weak self] result in
+            guard let self else { return }
             DispatchQueue.main.async {
                 switch result {
                 case .success(let appetizers):
                     self.appetizers = appetizers
                 case .failure(let error):
-                    alertItem = error.alertItem
+                    self.alertItem = error.alertItem
                 }
-                isLoading = false
+                self.isLoading = false
             }
         }
     }

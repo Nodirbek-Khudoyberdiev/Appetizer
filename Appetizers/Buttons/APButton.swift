@@ -8,13 +8,20 @@
 import SwiftUI
 
 struct APButton: View {
+    let title: LocalizedStringKey
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Text(title)
+            .font(.title3)
+            .fontWeight(.semibold)
+            .frame(width: 260, height: 50)
+            .foregroundColor(.white)
+            .background(Color.brandPrimary)
+            .cornerRadius(10)
     }
 }
 
 struct APButton_Previews: PreviewProvider {
     static var previews: some View {
-        APButton()
+        APButton(title: "$  - Add to order")
     }
 }
