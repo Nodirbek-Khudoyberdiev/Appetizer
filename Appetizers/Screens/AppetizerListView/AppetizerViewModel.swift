@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-final class AppetizerViewModel: ObservableObject {
+@MainActor final class AppetizerViewModel: ObservableObject {
     
     @Published var appetizers: [Appetizer] = []
     @Published var alertItem: AlertItem?
@@ -18,18 +18,22 @@ final class AppetizerViewModel: ObservableObject {
     
     func getAppetizers(){
         isLoading = true
-        Networking.shared.getAppetizers {[weak self] result in
-            guard let self else { return }
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let appetizers):
-                    self.appetizers = appetizers
-                case .failure(let error):
-                    self.alertItem = error.alertItem
+        Task {
+            do {
+                isLoading = false
+                appetizers = try await Networking.shared.getAppetizers()
+            } catch {
+                isLoading = false
+                if let error = error as? APAlert {
+                    alertItem = error.alertItem
+                } else {
+                    alertItem = APAlert.invalidResponse.alertItem
                 }
-                self.isLoading = false
             }
         }
     }
+
     
 }
+ 
+  
